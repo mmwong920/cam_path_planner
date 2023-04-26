@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from tritonai_roi_interface/msg/AddressBook.msg
+// generated code does not contain a copyright notice
+
+
+module tritonai_roi_interface {
+  module msg {
+    @verbatim (language="comment", text=
+      "list of relative position of ROIs")
+    struct AddressBook {
+      sequence<float> x_list;
+
+      sequence<float> y_list;
+
+      sequence<float> z_list;
+
+      @verbatim (language="comment", text=
+        "list of ROIs classes")
+      sequence<int8> class_list;
+    };
+  };
+};

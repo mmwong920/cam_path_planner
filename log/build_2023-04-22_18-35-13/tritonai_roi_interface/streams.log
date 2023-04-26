@@ -1,0 +1,64 @@
+[0.007s] Invoking command in '/home/triton-ai/moses_work/ros2_stuff/build/tritonai_roi_interface': CMAKE_PREFIX_PATH=/opt/ros/humble CONDA_PROMPT_MODIFIER=(base) /home/triton-ai/miniconda3/bin/cmake /home/triton-ai/moses_work/ros2_stuff/tritonai_roi_interface -DCMAKE_INSTALL_PREFIX=/home/triton-ai/moses_work/ros2_stuff/install/tritonai_roi_interface
+[0.050s] -- The C compiler identification is GNU 11.3.0
+[0.085s] -- The CXX compiler identification is GNU 11.3.0
+[0.091s] -- Detecting C compiler ABI info
+[0.126s] -- Detecting C compiler ABI info - done
+[0.136s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.136s] -- Detecting C compile features
+[0.136s] -- Detecting C compile features - done
+[0.138s] -- Detecting CXX compiler ABI info
+[0.176s] -- Detecting CXX compiler ABI info - done
+[0.183s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.183s] -- Detecting CXX compile features
+[0.184s] -- Detecting CXX compile features - done
+[0.185s] -- Found ament_cmake: 1.3.3 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.733s] -- Found Python3: /home/triton-ai/miniconda3/bin/python3.10 (found version "3.10.10") found components: Interpreter 
+[0.784s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.786s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.790s] -- Found rosidl_adapter: 3.1.4 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.818s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.888s] [31mCMake Error at /opt/ros/humble/share/rosidl_adapter/cmake/rosidl_adapt_interfaces.cmake:59 (message):
+[0.888s]   execute_process(/home/triton-ai/miniconda3/bin/python3.10 -m rosidl_adapter
+[0.888s]   --package-name tritonai_roi_interface --arguments-file
+[0.888s]   /home/triton-ai/moses_work/ros2_stuff/build/tritonai_roi_interface/rosidl_adapter__arguments__tritonai_roi_interface.json
+[0.888s]   --output-dir
+[0.888s]   /home/triton-ai/moses_work/ros2_stuff/build/tritonai_roi_interface/rosidl_adapter/tritonai_roi_interface
+[0.888s]   --output-file
+[0.888s]   /home/triton-ai/moses_work/ros2_stuff/build/tritonai_roi_interface/rosidl_adapter/tritonai_roi_interface.idls)
+[0.888s]   returned error code 1:
+[0.888s] 
+[0.888s]   Error processing 'int[] class_list' of
+[0.888s]   'tritonai_roi_interface/AddressBook': ''int' is an invalid message name.
+[0.888s]   It should have the pattern '^[A-Z][A-Za-z0-9]*$''
+[0.888s] 
+[0.889s]   Traceback (most recent call last):
+[0.889s] 
+[0.889s]     File "/home/triton-ai/miniconda3/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+[0.889s]       return _run_code(code, main_globals, None,
+[0.889s]     File "/home/triton-ai/miniconda3/lib/python3.10/runpy.py", line 86, in _run_code
+[0.889s]       exec(code, run_globals)
+[0.889s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/__main__.py", line 19, in <module>
+[0.889s]       sys.exit(main())
+[0.889s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/main.py", line 53, in main
+[0.889s]       abs_idl_file = convert_to_idl(
+[0.889s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/__init__.py", line 19, in convert_to_idl
+[0.889s]       return convert_msg_to_idl(
+[0.889s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/msg/__init__.py", line 28, in convert_msg_to_idl
+[0.889s]       msg = parse_message_string(package_name, input_file.stem, content)
+[0.889s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/parser.py", line 520, in parse_message_string
+[0.889s]       Type(type_string, context_package_name=pkg_name),
+[0.889s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/parser.py", line 277, in __init__
+[0.889s]       super(Type, self).__init__(
+[0.889s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/parser.py", line 205, in __init__
+[0.889s]       raise InvalidResourceName(
+[0.889s] 
+[0.889s]   rosidl_adapter.parser.InvalidResourceName: 'int' is an invalid message
+[0.889s]   name.  It should have the pattern '^[A-Z][A-Za-z0-9]*$'
+[0.889s] 
+[0.889s] Call Stack (most recent call first):
+[0.889s]   /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:130 (rosidl_adapt_interfaces)
+[0.889s]   CMakeLists.txt:17 (rosidl_generate_interfaces)
+[0.889s] 
+[0.889s] [0m
+[0.890s] -- Configuring incomplete, errors occurred!
+[0.894s] Invoked command in '/home/triton-ai/moses_work/ros2_stuff/build/tritonai_roi_interface' returned '1': CMAKE_PREFIX_PATH=/opt/ros/humble CONDA_PROMPT_MODIFIER=(base) /home/triton-ai/miniconda3/bin/cmake /home/triton-ai/moses_work/ros2_stuff/tritonai_roi_interface -DCMAKE_INSTALL_PREFIX=/home/triton-ai/moses_work/ros2_stuff/install/tritonai_roi_interface
