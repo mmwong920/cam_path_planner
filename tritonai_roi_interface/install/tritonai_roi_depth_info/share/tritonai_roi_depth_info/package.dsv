@@ -1,6 +1,0 @@
-source;share/tritonai_roi_depth_info/hook/pythonpath.ps1
-source;share/tritonai_roi_depth_info/hook/pythonpath.dsv
-source;share/tritonai_roi_depth_info/hook/pythonpath.sh
-source;share/tritonai_roi_depth_info/hook/ament_prefix_path.ps1
-source;share/tritonai_roi_depth_info/hook/ament_prefix_path.dsv
-source;share/tritonai_roi_depth_info/hook/ament_prefix_path.sh
