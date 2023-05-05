@@ -13,6 +13,12 @@ from fsd_path_planning import PathPlanner, MissionTypes, ConeTypes
 from fsd_path_planning.utils.math_utils import unit_2d_vector_from_angle, rotate
 from fsd_path_planning.utils.cone_types import ConeTypes
 
+from rclpy.qos import qos_profile_sensor_data
+
+from nav_msgs.msg import Path
+from geometry_msgs.msg import PoseStamped
+
+
 class PahtPublisher(Node):
     def __init__(self):
         super().__init__('path_publisher')
@@ -40,6 +46,7 @@ class MinimalSubscriber(Node):
         # Path Planning
         self.planner = PathPlanner(MissionTypes.trackdrive)
         self.path_publisher = PahtPublisher()
+        self.path_publisher_robohub = self.create_publisher(Path, '/trajectory', qos_profile_sensor_data)
 
         # self.fig = plt.figure()
         # self.ax1 = self.fig.add_subplot(1,1,1)
@@ -67,6 +74,19 @@ class MinimalSubscriber(Node):
         data['path'] = path.tolist()
         pub_msg.data = json.dumps(data)
         self.path_publisher.publisher_.publish(pub_msg)
+        path_msg = Path()
+        for p in path:
+            pose_msg = PoseStamped()
+            pose_msg.pose.position.x = p[1]
+            pose_msg.pose.position.y = p[2]
+            pose_msg.pose.position.z = 0.0
+            pose_msg.pose.orientation.x = 0.0
+            pose_msg.pose.orientation.y = 0.0
+            pose_msg.pose.orientation.z = 0.0
+            pose_msg.pose.orientation.w = 0.0
+            path_msg.poses.append(pose_msg)
+
+        self.path_publisher_robohub.publish(path_msg)
         
         self.get_logger().info('Path is: "%s"' % path)
     

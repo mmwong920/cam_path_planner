@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import transforms3d
 import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import String
-# from tritonai_roi_interface.msg import AddressBook
 
 from pathlib import Path
 import sys
@@ -25,6 +25,8 @@ import depthai as dai
 import numpy as np
 import time
 import json
+
+
 
 
 class MinimalPublisher(Node):
@@ -36,10 +38,11 @@ class MinimalPublisher(Node):
         self.camera_model()
 
 
-    def depth_roi_callback(self,x:list,y:list,z:list,class_name):
+    def depth_roi_callback(self, heading_angle, x:list,y:list,z:list,class_name):
         pub_msg = String()
         msg = dict()
         if class_name == "cone":
+            msg['heading_angle'] = heading_angle
             msg['x_list'] = x
             msg['y_list'] = y
             msg['z_list'] = z
@@ -48,6 +51,7 @@ class MinimalPublisher(Node):
             self.publisher_cone.publish(pub_msg)
             print("msg published",json.dumps(msg))
         elif class_name == "obstacle":
+            msg['heading_angle'] = heading_angle
             msg['x_list'] = x
             msg['y_list'] = y
             msg['z_list'] = z
@@ -94,6 +98,22 @@ class MinimalPublisher(Node):
         # Create pipeline
         pipeline = dai.Pipeline()
 
+        #IMU
+        imu = pipeline.create(dai.node.IMU)
+        xlinkOut = pipeline.create(dai.node.XLinkOut)
+        xlinkOut.setStreamName("imu")
+        # enable ROTATION_VECTOR at 400 hz rate
+        imu.enableIMUSensor(dai.IMUSensor.ROTATION_VECTOR, 100)
+        # it's recommended to set both setBatchReportThreshold and setMaxBatchReports to 20 when integrating in a pipeline with a lot of input/output connections
+        # above this threshold packets will be sent in batch of X, if the host is not blocked and USB bandwidth is available
+        imu.setBatchReportThreshold(1)
+        # maximum number of IMU packets in a batch, if it's reached device will block sending until host can receive it
+        # if lower or equal to batchReportThreshold then the sending is always blocking on device
+        # useful to reduce device's CPU load  and number of lost packets, if CPU load is high on device side due to multiple nodes
+        imu.setMaxBatchReports(10)
+        # Link plugins IMU -> XLINK
+        imu.out.link(xlinkOut.input)
+
         # Define sources and outputs
         camRgb = pipeline.create(dai.node.ColorCamera)
         spatialDetectionNetwork = pipeline.create(dai.node.YoloSpatialDetectionNetwork)
@@ -113,13 +133,13 @@ class MinimalPublisher(Node):
 
         # Properties
         camRgb.setPreviewSize(256, 160)
-        # camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_800_P)
+        camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_800_P)
         camRgb.setInterleaved(False)
         camRgb.setColorOrder(dai.ColorCameraProperties.ColorOrder.BGR)
 
-        monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+        monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_800_P)
         monoLeft.setBoardSocket(dai.CameraBoardSocket.LEFT)
-        monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+        monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_800_P)
         monoRight.setBoardSocket(dai.CameraBoardSocket.RIGHT)
 
         # setting node configs
@@ -132,9 +152,9 @@ class MinimalPublisher(Node):
         stereo.setExtendedDisparity(long_range)
 
         spatialDetectionNetwork.setBlobPath(nnBlobPath)
-        spatialDetectionNetwork.setConfidenceThreshold(0.7)
+        spatialDetectionNetwork.setConfidenceThreshold(0.8)
         spatialDetectionNetwork.input.setBlocking(False)
-        spatialDetectionNetwork.setBoundingBoxScaleFactor(0.5)
+        spatialDetectionNetwork.setBoundingBoxScaleFactor(0.2)
         spatialDetectionNetwork.setDepthLowerThreshold(100)
         spatialDetectionNetwork.setDepthUpperThreshold(8000)
 
@@ -203,6 +223,11 @@ class MinimalPublisher(Node):
         # Connect to device and start pipeline
         with dai.Device(pipeline) as device:
 
+            imuQueue = device.getOutputQueue(name="imu", maxSize=50, blocking=False)
+            baseTs = None
+            base_yaw = None
+            del_yaw = 0
+
             # Output queues will be used to get the rgb frames and nn data from the outputs defined above
             previewQueue = device.getOutputQueue(name="rgb", maxSize=4, blocking=False)
             detectionNNQueue = device.getOutputQueue(name="detections", maxSize=4, blocking=False)
@@ -220,6 +245,22 @@ class MinimalPublisher(Node):
                 inDet = detectionNNQueue.get()
                 depth = depthQueue.get()
                 inNN = networkQueue.get()
+
+                imuData = imuQueue.get()  # blocking call, will wait until a new data has arrived
+                imuPackets = imuData.packets
+                for imuPacket in imuPackets:
+                    rVvalues = imuPacket.rotationVector
+                    # rvTs = rVvalues.getTimestampDevice()
+                    # if baseTs is None:
+                    #     baseTs = rvTs
+                    # rvTs = rvTs - baseTs
+                    # imuF = "{:.06f}"
+                    # tsF  = "{:.03f}"
+                    yaw = transforms3d.euler.quat2euler([rVvalues.real,rVvalues.i,rVvalues.j,rVvalues.k])[2]
+                    if base_yaw is None:
+                        base_yaw = yaw
+                    del_yaw = yaw-base_yaw
+                    del_yaw = np.arctan2(np.sin(del_yaw),np.cos(del_yaw))
 
                 if printOutputLayersOnce:
                     toPrint = 'Output layer names:'
@@ -291,9 +332,9 @@ class MinimalPublisher(Node):
 
                     cv2.rectangle(frame, (x1, y1), (x2, y2), color, cv2.FONT_HERSHEY_SIMPLEX)
                 if len(cone_x) != 0:
-                    self.depth_roi_callback(cone_x,cone_y,cone_z,"cone")
+                    self.depth_roi_callback(del_yaw, cone_x,cone_y,cone_z,"cone")
                 if len(box_x) != 0:
-                    self.depth_roi_callback(box_x,box_y,box_z,"obstacle")
+                    self.depth_roi_callback(del_yaw, box_x,box_y,box_z,"obstacle")
 
                 cv2.putText(frame, "NN fps: {:.2f}".format(fps), (2, frame.shape[0] - 4), cv2.FONT_HERSHEY_TRIPLEX, 0.4, color)
                 cv2.imshow("depth", depthFrameColor)
@@ -321,4 +362,3 @@ if __name__ == '__main__':
     main()
 
 #!/usr/bin/env python3
-

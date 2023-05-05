@@ -18,12 +18,19 @@ class MinimalSubscriber(Node):
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
+        car_position = [0.000001,0.000001]
         data = json.loads(msg.data)
+        car_direction = np.array(data['car_direction'])
         x_pos = np.array(data['x_list'])/1000
         z_pos = np.array(data['z_list'])/1000
         path = np.array(data['path'])
         plt.scatter(x_pos, z_pos, c='k')
         plt.plot(*path[:, 1:3].T)
+        plt.plot(
+        [car_position[0], car_position[0] + car_direction[0]],
+        [car_position[1], car_position[1] + car_direction[1]],
+        c="k",
+        )
         plt.axis("equal")
         plt.show()
         # self.get_logger().info('I heard: "%s"' % msg.data)
