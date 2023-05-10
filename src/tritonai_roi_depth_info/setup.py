@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'talker = tritonai_roi_depth_info.publisher_member_function:main',
+            'talker = tritonai_roi_depth_info.object_detection_publisher:main',
             'listener = tritonai_roi_depth_info.subscriber_2d_projection:main',
             'path_listener = tritonai_roi_depth_info.path_display:main',
             'listener_gps = tritonai_roi_depth_info.subscriber_2d_projection_GPS:main'

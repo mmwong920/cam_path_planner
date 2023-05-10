@@ -67,7 +67,7 @@ class MinimalPublisher(Node):
         '''
 
         # Get argument first
-        nnBlobPath = str((Path(__file__).parent / Path('../models/box_cone_v6/box_cones_v6_openvino_2022.1_10shave.blob')).resolve().absolute())
+        nnBlobPath = str((Path(__file__).parent / Path('../models/box_cone_v9/Custom_Object_Detection_using_YOLOv5_512_DataSet_2_openvino_2022.1_10shave.blob')).resolve().absolute())
         # if 1 < len(sys.argv):
         #     arg = sys.argv[1]
         #     if arg == "yolo3":
@@ -132,14 +132,14 @@ class MinimalPublisher(Node):
         nnNetworkOut.setStreamName("nnNetwork")
 
         # Properties
-        camRgb.setPreviewSize(256, 160)
+        camRgb.setPreviewSize(512, 320)
         camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_800_P)
         camRgb.setInterleaved(False)
         camRgb.setColorOrder(dai.ColorCameraProperties.ColorOrder.BGR)
 
-        monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_800_P)
+        monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
         monoLeft.setBoardSocket(dai.CameraBoardSocket.LEFT)
-        monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_800_P)
+        monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
         monoRight.setBoardSocket(dai.CameraBoardSocket.RIGHT)
 
         # setting node configs
@@ -150,6 +150,8 @@ class MinimalPublisher(Node):
         stereo.setLeftRightCheck(lrcheck)
         stereo.setSubpixel(subpixel)
         stereo.setExtendedDisparity(long_range)
+        stereo.enableDistortionCorrection(True)
+        stereo.setInputResolution(512,320)
 
         spatialDetectionNetwork.setBlobPath(nnBlobPath)
         spatialDetectionNetwork.setConfidenceThreshold(0.8)
@@ -185,22 +187,22 @@ class MinimalPublisher(Node):
                         326.0
                     ])
         spatialDetectionNetwork.setAnchorMasks({
-                        "side32": [
-                            0,
-                            1,
-                            2
-                        ],
-                        "side16": [
-                            3,
-                            4,
-                            5
-                        ],
-                        "side8": [
-                            6,
-                            7,
-                            8
-                        ]
-                    })
+                "side64": [
+                    0,
+                    1,
+                    2
+                ],
+                "side32": [
+                    3,
+                    4,
+                    5
+                ],
+                "side16": [
+                    6,
+                    7,
+                    8
+                ]
+            })
         spatialDetectionNetwork.setIouThreshold(0.5)
         spatialDetectionNetwork.setConfidenceThreshold(0.2)
 

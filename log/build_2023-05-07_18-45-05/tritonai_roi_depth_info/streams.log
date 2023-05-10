@@ -1,0 +1,29 @@
+[0.414s] Invoking command in '/home/triton-ai/moses_work/cam_path_planner/src/tritonai_roi_depth_info': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/triton-ai/moses_work/cam_path_planner/build/tritonai_roi_depth_info/prefix_override:/home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/tritonai_roi_depth_info build --build-base /home/triton-ai/moses_work/cam_path_planner/build/tritonai_roi_depth_info/build install --record /home/triton-ai/moses_work/cam_path_planner/build/tritonai_roi_depth_info/install.log --single-version-externally-managed
+[0.574s] running egg_info
+[0.575s] writing ../../build/tritonai_roi_depth_info/tritonai_roi_depth_info.egg-info/PKG-INFO
+[0.575s] writing dependency_links to ../../build/tritonai_roi_depth_info/tritonai_roi_depth_info.egg-info/dependency_links.txt
+[0.575s] writing entry points to ../../build/tritonai_roi_depth_info/tritonai_roi_depth_info.egg-info/entry_points.txt
+[0.575s] writing requirements to ../../build/tritonai_roi_depth_info/tritonai_roi_depth_info.egg-info/requires.txt
+[0.575s] writing top-level names to ../../build/tritonai_roi_depth_info/tritonai_roi_depth_info.egg-info/top_level.txt
+[0.576s] reading manifest file '../../build/tritonai_roi_depth_info/tritonai_roi_depth_info.egg-info/SOURCES.txt'
+[0.577s] writing manifest file '../../build/tritonai_roi_depth_info/tritonai_roi_depth_info.egg-info/SOURCES.txt'
+[0.577s] running build
+[0.577s] running build_py
+[0.577s] copying tritonai_roi_depth_info/publisher_member_function.py -> /home/triton-ai/moses_work/cam_path_planner/build/tritonai_roi_depth_info/build/lib/tritonai_roi_depth_info
+[0.577s] running install
+[0.577s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.577s]   warnings.warn(
+[0.577s] running install_lib
+[0.578s] copying /home/triton-ai/moses_work/cam_path_planner/build/tritonai_roi_depth_info/build/lib/tritonai_roi_depth_info/publisher_member_function.py -> /home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/python3.10/site-packages/tritonai_roi_depth_info
+[0.578s] byte-compiling /home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/python3.10/site-packages/tritonai_roi_depth_info/publisher_member_function.py to publisher_member_function.cpython-310.pyc
+[0.580s] running install_data
+[0.580s] running install_egg_info
+[0.581s] removing '/home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/python3.10/site-packages/tritonai_roi_depth_info-0.0.0-py3.10.egg-info' (and everything under it)
+[0.581s] Copying ../../build/tritonai_roi_depth_info/tritonai_roi_depth_info.egg-info to /home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/python3.10/site-packages/tritonai_roi_depth_info-0.0.0-py3.10.egg-info
+[0.581s] running install_scripts
+[0.593s] Installing listener script to /home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/tritonai_roi_depth_info
+[0.593s] Installing listener_gps script to /home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/tritonai_roi_depth_info
+[0.593s] Installing path_listener script to /home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/tritonai_roi_depth_info
+[0.593s] Installing talker script to /home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/tritonai_roi_depth_info
+[0.593s] writing list of installed files to '/home/triton-ai/moses_work/cam_path_planner/build/tritonai_roi_depth_info/install.log'
+[0.608s] Invoked command in '/home/triton-ai/moses_work/cam_path_planner/src/tritonai_roi_depth_info' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/triton-ai/moses_work/cam_path_planner/build/tritonai_roi_depth_info/prefix_override:/home/triton-ai/moses_work/cam_path_planner/install/tritonai_roi_depth_info/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/tritonai_roi_depth_info build --build-base /home/triton-ai/moses_work/cam_path_planner/build/tritonai_roi_depth_info/build install --record /home/triton-ai/moses_work/cam_path_planner/build/tritonai_roi_depth_info/install.log --single-version-externally-managed
